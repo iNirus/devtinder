@@ -1,11 +1,23 @@
 console.log("Hello Dev Tinder App");
-const express = require('express');
+const express = require("express");
+const connectDB = require("./config/database")
 const app = express();
 
-app.use("/hello",(req, res) => {
-    res.send("HelloDev Tinder Server Started Successfully")
+connectDB().then(()=>{
+    app.listen(3000, () => {
+        console.log("Dev Tinder Server Started Successfully on Port 3000");         
+})}).catch(()=>{
+    console.log("Error Occured While Connecting to Database");
+})
+
+const { adminAuth } = require("./middleware/auth");
+
+
+app.use("/", (req, res) => {
+  res.send("HelloDev Tinder Server Started Successfully");
 });
 
-app.listen(3000, () => {
-    console.log("Dev Tinder Server Started Successfully on Port 3000")
+// Handle auth middleware
+app.use("/admin", (res, req) => {
+  res.send("Admin Dashboard");
 });
